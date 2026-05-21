@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h1>🎥 Видеогалерея</h1>
+    
+    {% if session.username %}
+        <!-- Форма загрузки видео -->
+        <div class="card" style="background: rgba(102, 126, 234, 0.15);">
+            <h3>📤 Загрузить новое видео</h3>
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" name="video_file" accept="video/*" required style="padding: 10px;">
+                </div>
+                <button type="submit">📤 Загрузить</button>
+            </form>
+            {% if video_url %}
+                <p style="margin-top: 15px; color: #4ade80;">✅ Видео успешно загружено!</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="card" style="text-align: center;">
+            <p>🔒 <a href="{{ url_for('login') }}">Войдите</a> или <a href="{{ url_for('register') }}">зарегистрируйтесь</a>, чтобы загружать видео</p>
+        </div>
+    {% endif %}
+
+    <!-- Список видео -->
+    <h3>📺 Все видео</h3>
+    {% if videos %}
+        <div class="video-grid">
+    {% for video in videos %}
+        <div class="video-card">
+            <div style="background: #000; border-radius: 12px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                <video controls preload="metadata" style="max-width: 100%; max-height: 180px; width: auto; height: auto; border-radius: 12px;" onloadedmetadata="this.videoHeight = this.videoHeight;">
+                    <source src="{{ url_for('static', filename=video.video_path) }}" type="video/mp4">
+                </video>
+            </div>
+            <div class="video-info">
+                <div class="video-title">🎬 {{ video.video_path.split('/')[-1][:30] }}</div>
+                <div class="video-meta">
+                    <span>👤 {{ video.username }}</span>
+                    <span>📅 {{ video.upload_date.split('T')[0] if video.upload_date else 'Недавно' }}</span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+    {% else %}
+        <div class="card" style="text-align: center;">
+            <p>📭 Пока нет видео. Будьте первым, кто загрузит видео!</p>
+        </div>
+    {% endif %}
+
+    <!-- Чат -->
+    <div class="card">
+        <h3>💬 Чат</h3>
+        <div class="chat-wrapper">
+            <div class="chat-messages" id="chatMessages">
+                {% for message in messages %}
+                    <div class="message">
+                        <strong>{{ message.username }}</strong>
+                        <small>{{ message.timestamp.split('.')[0] | replace('T', ' ') if message.timestamp else '' }}</small>
+                        <p style="margin-top: 5px;">{{ message.message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if session.username %}
+                <form method="post" class="chat-input-area">
+                    <input type="text" name="message" placeholder="✏️ Напишите сообщение..." required>
+                    <button type="submit">📤 Отправить</button>
+                </form>
+            {% else %}
+                <div style="padding: 15px; text-align: center; color: #aaa;">
+                    🔒 <a href="{{ url_for('login') }}">Войдите</a>, чтобы участвовать в чате
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="home-button">🏠 На главную</a>
+</div>
+
+<script>
+    const chatContainer = document.getElementById('chatMessages');
+    if (chatContainer) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+</script>
+{% endblock %}

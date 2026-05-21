@@ -1,0 +1,40 @@
+# Виртуальное окружение
+venv/
+env/
+ENV/
+
+# Настройки IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# База данных
+*.db
+*.sqlite3
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Логи
+*.log
+*.tmp
+
+# Видео файлы (загруженные пользователями)
+app/static/uploads/*.mp4
+app/static/uploads/*.avi
+app/static/uploads/*.mov
+app/static/uploads/*.mkv
+
+# Системные файлы
+.DS_Store
+Thumbs.db

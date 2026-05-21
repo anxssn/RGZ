@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="text-align: center; background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);">
+    <h1 style="font-size: 2.8rem;">Добро пожаловать на видеоплатформу!</h1>
+    <p style="font-size: 1.2rem; margin-bottom: 30px; color: #aaa;">
+        Ваша платформа для обмена видео и живого общения!
+    </p>
+    
+    {% if session.username %}
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('video') }}" style="text-decoration: none;">
+                <button style="padding: 14px 32px; font-size: 16px;">🎥 Смотреть видео</button>
+            </a>
+            <a href="{{ url_for('account') }}" style="text-decoration: none;">
+                <button style="padding: 14px 32px; font-size: 16px; background: rgba(255,255,255,0.1);">👤 Мой аккаунт</button>
+            </a>
+            <a href="{{ url_for('logout') }}" style="text-decoration: none;">
+                <button style="padding: 14px 32px; font-size: 16px; background: rgba(231,76,60,0.2);">🚪 Выйти</button>
+            </a>
+        </div>
+    {% else %}
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('register') }}" style="text-decoration: none;">
+                <button style="padding: 14px 32px; font-size: 16px;">📝 Регистрация</button>
+            </a>
+            <a href="{{ url_for('login') }}" style="text-decoration: none;">
+                <button style="padding: 14px 32px; font-size: 16px; background: rgba(255,255,255,0.1);">🔑 Вход</button>
+            </a>
+            <a href="{{ url_for('video') }}" style="text-decoration: none;">
+                <button style="padding: 14px 32px; font-size: 16px; background: rgba(255,255,255,0.05);">🎥 Гость</button>
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Преимущества платформы - ровные карточки -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 20px;">
+    <div class="card" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <div style="font-size: 3.5rem; margin-bottom: 16px;">🎬</div>
+        <h3 style="margin-bottom: 12px;">Смотрите видео</h3>
+        <p style="color: #aaa; line-height: 1.5;">Любые видео в высоком качестве</p>
+    </div>
+    
+    <div class="card" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <div style="font-size: 3.5rem; margin-bottom: 16px;">📤</div>
+        <h3 style="margin-bottom: 12px;">Загружайте</h3>
+        <p style="color: #aaa; line-height: 1.5;">Делитесь своим контентом с другими</p>
+    </div>
+    
+    <div class="card" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <div style="font-size: 3.5rem; margin-bottom: 16px;">💬</div>
+        <h3 style="margin-bottom: 12px;">Общайтесь</h3>
+        <p style="color: #aaa; line-height: 1.5;">Чат с другими пользователями</p>
+    </div>
+</div>
+{% endblock %}

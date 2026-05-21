@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h1>👤 Личный кабинет</h1>
+    
+    <div class="video-grid" style="grid-template-columns: 1fr;">
+        <div class="card" style="background: rgba(102, 126, 234, 0.15);">
+            <h3>📋 Информация о пользователе</h3>
+            <p><strong>👤 Имя пользователя:</strong> {{ username }}</p>
+            <p><strong>📧 Email:</strong> {{ email }}</p>
+        </div>
+        
+        <div class="card">
+            <h3>🎬 Ваши видео</h3>
+            {% if video_urls %}
+                <div class="video-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+                    {% for video_url in video_urls %}
+                        <div class="video-card" style="text-align: center;">
+                            <!-- Видео с правильными пропорциями -->
+                            <div style="background: #000; border-radius: 12px; display: flex; justify-content: center; align-items: center; overflow: hidden; min-height: 180px;">
+                                <video controls preload="metadata" style="max-width: 100%; max-height: 180px; width: auto; height: auto; border-radius: 12px;" onloadedmetadata="this.videoHeight = this.videoHeight;">
+                                    {% if video_url.startswith('http') %}
+                                        <source src="{{ video_url }}" type="video/mp4">
+                                    {% else %}
+                                        <source src="{{ url_for('static', filename=video_url.replace('static/', '')) }}" type="video/mp4">
+                                    {% endif %}
+                                </video>
+                            </div>
+                            <div class="video-info">
+                                <div class="video-title" style="font-size: 12px; word-break: break-all;">{{ video_url.split('/')[-1][:35] }}</div>
+                                <form action="{{ url_for('delete_video_route', video_path=video_url) }}" method="post" style="margin-top: 10px;">
+                                    <button type="submit" class="btn-danger" style="width: 100%; padding: 8px;">🗑️ Удалить</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="text-align: center; color: #aaa;">📭 У вас пока нет видео</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <a href="{{ url_for('index') }}" class="home-button" style="display: inline-block; margin-top: 20px;">🏠 На главную</a>
+</div>
+{% endblock %}
